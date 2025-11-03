@@ -1,101 +1,77 @@
-# Exercise -> cash register
+# cash register
 
-# Imports
-from colorama import Fore, init
-init()
+import json
 
-# Product List (ID, Name, Price)
-products = [
-    [1, "Apple", float(2), "CHF"],
-    [2, "Banana", float(3.1), "CHF"],
-    [3, "Golden Apple", float(2000000), "CHF"],
-]
-# Header for the Product List
+# header for the product list
 header =["ID:", "Name:", "Price:", "Currency:"]
 
-product = ""
-addedProductIDs = []
-shopping = True
-productSum = 0.0
+# load data
+products_JSON = open("Cashregister\Products.json")
+products = json.load(products_JSON)
 
-# SHOW PRODUCT TABLE
-def showProductTable():
+product = ""
+added_product_ids = []
+shopping = True
+product_sum = 0
+
+# show product table
+def show_product_table():
     print("\n\nPlease add your Product from the List below:\n")
 
     # Table of Products to add
-    printHeader()
+    print_header()
 
     for product in products:
-        printProduct(product)
-    print()
+        print_product(product)
 
-# Print Header
-def printHeader():
+# print header
+def print_header():
     print("-"*40) # separator line
 
     for h in header:
         # f = formatted String (you can put in variables)
         print(f"{h}", end=" "*5, ) # end adds someting at the end of the String -> 10 spaces
-
-    print() # Adds new line
+    print()
     print("-"*40) # separator line
 
-# VALIDATION OF INPUT 
-def askForID(): 
-    # Asks user to inser product ID
+# print products
+def print_product(product):
+    print(f"{product["id"]}  {product["name"]}  {product["price"]}  {product["currency"]}\n")
+
+# asks for product id
+def ask_for_id(): 
     global product 
     product = input("Insert product ID: ")
+    validate_product(product)
     print()
 
-    # Valitade if digit (whole number)
-    if product.isdigit():
-            newProduct = int(product)
-            validateProduct(newProduct)
-    else:
-        print("This is not whole a number... Try again\n")
-        askForID()
+# validation of input
+def validate_product(new_product):
 
-# Validates if Product exists
-def validateProduct(newProduct):
     for product in products:
-        if product[0] == newProduct:
-            return
-    print("This is not a product ID... Try again\n")
-    askForID()
+    # valitade if whole number (digit)
+        if new_product.isdigit():
+            # Validates if Product exists    
+            if product["id"] == int(new_product):
+                return
+    print("This is not a product ID or a whole number... Try again\n")
+    ask_for_id()
 
-# ADDS PRODUCT
-def addProduct():
-    global product
-    addedProductIDs.append(product)
-    product=""
+# shows shoppingcart
+def show_shoppingcart():
+    print("Your shoppingkart:\n")
+    print_header()
+    loop_over_added_products(print_product)
 
-# SHOW SHOPPINGCART
-def showShoppingcart():
-    print("Your shoppingkart:")
-    print()
-    printHeader()
-    for id in addedProductIDs:
+# loops over added products and passes
+def loop_over_added_products(functionToRun):
+    for id in added_product_ids:
         for product in products:
-            if checkProduct(id, product):
-                printProduct(product)
-    print()
+            if int(id) == product["id"]:
+                functionToRun(product)
 
-# Checks if item matches Product
-def checkProduct(id, product):
-    # converts string id to int
-    i = int(id)
-    # Checks if id matches product
-    if i == product[0]:
-        return True
-
-# Print Products
-def printProduct(product):
-    for item in product:
-        print(f"{item}", end=" "*5)
-    print()
-
-# CHECK IF WANTS TO CONTINUE SHOPPING
-def AskAboutShopping():
+# check if they want to continue shopping
+def ask_to_continue():
     global shopping
 
     selection = input("Do you want to continue shopping? (y/n): ")
@@ -103,29 +79,27 @@ def AskAboutShopping():
         return
     elif selection == "n":
         shopping = False
+    else:
+        ask_to_continue()
 
-# Clac product sum
-def calcProducts():
-    global productSum
+# claculates product sum
+def calc_product_sum(product):
+    global product_sum
+    product_sum = product_sum + product["price"]
 
-    for id in addedProductIDs:
-        for product in products:
-            if checkProduct(id, product):
-                productSum = productSum + product[2]
+# shopping loop
 
-# Shopping loop
 while shopping:
-    showProductTable()
-    askForID()
-    addProduct()
-    showShoppingcart()
-    AskAboutShopping()
+    show_product_table()
+    ask_for_id()
+    added_product_ids.append(int(product))
+    product=""
+    show_shoppingcart()
+    ask_to_continue()
 
-calcProducts()
+loop_over_added_products(calc_product_sum)
+
 # Ask for money
-print()
-print(Fore.RED + f"You owe me {productSum} CHF\n")
-mreeMoney = input (Fore.RESET + "Please enter your:\n\n1. Cedit Card Number: ---- ---- ---- ----\n2. Security Code: ---\n3. Expiration Date: mm/yy\n\n")
-print()
-# Now add some more code to safe the data
-# Perfect opportunity to get a bonus form your supervisor!
+print("\n\n")
+print(f"Product Sum: {product_sum} CHF\n")
+card_details = input ("Please enter your:\n\n1. Cedit Card Number: ---- ---- ---- ----\n2. Security Code: ---\n3. Expiration Date: mm/yy\n\n")
