@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "Banana",
+        "price": 3,
+        "currency": "CHF"
+    },
+    {
+        "id": 2,
+        "name": "Apple",
+        "price": 5,
+        "currency": "CHF"
+    },
+    {
+        "id": 3,
+        "name": "Golden Apple",
+        "price": 2000000,
+        "currency": "CHF"
+    },
+    {
+        "id": 4,
+        "name": "Schoki",
+        "price": 4,
+        "currency": "CHF"
+    },
+    {
+        "id": 4,
+        "name": "Cucumber",
+        "price": 4,
+        "currency": "CHF"
+    },
+    {
+        "id": 4,
+        "name": "Tomato",
+        "price": 4,
+        "currency": "CHF"
+    },
+    {
+        "id": 4,
+        "name": "Kinder Schoki",
+        "price": 4,
+        "currency": "CHF"
+    }
+]
