@@ -8,3 +8,7 @@ header =["ID:", "Name:", "Price:", "Currency:"]
 # load data
 products_JSON = open("Cashregister\Products.json")
 products = json.load(products_JSON)
+
+# adds product to shoppingcart
+def add_product():
+    print("hi")
