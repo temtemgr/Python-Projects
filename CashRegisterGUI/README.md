@@ -2,4 +2,3 @@
 
 #### Need to install following:
 pip install customtkinter
-pip install CTkTable
