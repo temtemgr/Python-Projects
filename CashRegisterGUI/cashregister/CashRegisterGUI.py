@@ -16,17 +16,20 @@ def set_window(window: CTk, window_width: int, window_height: int, scale: float)
     # x and y are the coordinates where the window will spawn
     window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-# sets Frame and grid
+# sets all frames
 def configure_frames(window: CTk):
-    product_table_frame = CTkFrame(window, width = 500, height = 480, corner_radius = 0, fg_color= "#242424")
-    shopping_cart_frame = CTkFrame(window, width = 300, height = 550,border_width = 3, border_color = "#1e1e1e",corner_radius = 0,fg_color= "#242424")
-    product_id_frame = CTkFrame(window, width = 500, height = 70, corner_radius = 0)
+    product_table_frame = CTkFrame(window, width = 450, height = 480, corner_radius = 0, fg_color= "#242424")
+    shopping_cart_frame = CTkFrame(window, width = 350, height = 550, border_width = 3, border_color = "#1e1e1e", corner_radius = 0, fg_color= "#242424")
+    product_id_frame = CTkFrame(window, width = 450, height = 70, corner_radius = 0)
     # sticky makes it stick to a side: north, east, south, west
     product_table_frame.grid(column = 0, row = 0, sticky = "NSEW")
     shopping_cart_frame.grid(column = 1, row = 0, sticky = "NSEW", rowspan = 2)
     product_id_frame.grid(column = 0, row = 1, sticky = "NSEW")
-
+    # weight = 1 gives a specific column/row the maximum width/height of the frame
     product_id_frame.rowconfigure(0, weight = 1)
+    product_table_frame.columnconfigure(0, weight = 1)
+    product_table_frame.rowconfigure(0, weight = 1)
+    shopping_cart_frame.rowconfigure(2, weight = 1)
     
     window.columnconfigure((0,1), weight = 1)
     window.rowconfigure((0,1), weight = 1)
@@ -36,14 +39,64 @@ def configure_frames(window: CTk):
 
 # sets add_product button
 def configure_add_product_button(frame: CTkFrame):
-    btn = CTkButton(frame, text = "Add", command = core.add_product, width = 60, corner_radius = 50, text_color = "Black")
-    return btn.grid(column = 3, row = 0, padx = 20)
+    btn = CTkButton(frame, text = "Add", command = core.add_product, width = 60, corner_radius = 50, fg_color = "#383838", border_color = "grey", border_width = 1)
+    btn.grid(column = 2, row = 0, padx = 20)
+    return btn
 
 # sets product_id label
 def configure_product_id_label(frame: CTkFrame):
     label = CTkLabel(frame, text = "Article Number:")
-    return label.grid(column = 0, row  = 0, sticky = "EW", padx = (30, 10), pady = 10)
+    label.grid(column = 0, row  = 0, sticky = "EW", padx = (30, 10), pady = 10)
+    return label
 
 # sets product_id entry
 def configure_product_id_entry(frame: CTkFrame):
     return CTkEntry(frame, width = 160).grid(column = 1, row = 0, sticky = "W")
+
+# FRAME table - widgets
+
+# sets table tabview
+def configure_tab_view(frame: CTkFrame):
+    tab_view: CTkTabview = CTkTabview(frame, width = 550, height = 460, segmented_button_selected_color = "#696969", segmented_button_selected_hover_color = "#696969")
+    tab_view.grid(column = 0, row = 0, padx = 15, pady = 5)
+    return tab_view
+
+# sets all tabs
+def configure_tabs(tab_view: CTkTabview):
+    all_products = tab_view.add("All Products")
+    # sets as default tab
+    tab_view.set("All Products")
+    return {"all_products": all_products, "fruits": tab_view.add("Fruits"), "vegetables": tab_view.add("Vegetables"), "bakery": tab_view.add("Bakery"), "other": tab_view.add("Other")}
+
+# FRAME cart - widgets
+
+# sets cart label
+def configure_cart_label(frame: CTkFrame):
+    label = CTkLabel(frame, text = "Shopping Cart")
+    label.grid(column = 0, row  = 0, sticky = "W", padx = 20, pady = (15, 10), columnspan = 3)
+    return label
+
+# sets cart frame
+def configure_cart_frame(frame: CTkFrame):
+    cart_frame = CTkFrame(frame, width = 300, height = 421)
+    cart_frame.grid_configure(padx = 32)
+    cart_frame.grid(column = 0, row = 1, sticky = "NSEW", columnspan = 3)
+    return cart_frame
+
+# sets cart total label
+def configure_cart_total_label(frame: CTkFrame):
+    label = CTkLabel(frame, text = "Total:")
+    label.grid(column = 0, row  = 2, sticky = "W", padx = (30,0))
+    return label
+
+# sets cart sum label
+def configure_cart_sum_label(frame: CTkFrame):
+    label = CTkLabel(frame, text = "20  CHF")
+    label.grid(column = 1, row  = 2, sticky = "W", padx = 10)
+    return label
+
+# sets buy button
+def configure_buy_button(frame: CTkFrame):
+    btn = CTkButton(frame, text = "Buy", command = core.buy_products, width = 60, corner_radius = 50, text_color = "Black")
+    btn.grid(column = 2, row = 2, padx = 40, sticky = "E")
+    return btn

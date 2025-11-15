@@ -12,3 +12,7 @@ products = json.load(products_JSON)
 # adds product to shoppingcart
 def add_product():
     print("hi")
+
+# buys products
+def buy_products():
+    print("bye")
