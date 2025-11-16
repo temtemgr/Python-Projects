@@ -1,11 +1,10 @@
 #  A cash register with GUI
 
-import json
 from customtkinter import *
 from tkinter import messagebox
 
-import cashregister.gui as gui
-import cashregister.data as data
+from cashregister import gui as gui
+from cashregister import data as data
 
 screen_width = 910
 screen_height = 550
@@ -63,11 +62,10 @@ display_products(all_tabs["all_products"])
 
 # adds product to cart table
 def add_product(product_name: str):
-    global cart
     global product_id_entry
     for product in data.products:
         if product["id"] == int(product_name):
-            cart.append({
+            data.cart.append({
                 "name": product["name"],
                 "price": product["price"],
                 "currency": product["currency"]
@@ -77,17 +75,16 @@ def add_product(product_name: str):
 
 # displays added product in cart
 def update_products_in_cart():
-    global cart
-    for i, item in enumerate(cart):
+    for i, item in enumerate(data.cart):
         for j, value in enumerate(item.values()):
             gui.configure_table_row(cart_frame, value, j, i + 1)
     sum = calc_sum()
     cart_sum_label.configure(text = f"{sum} CHF")
 
-# claculates product sum in th cart
+# claculates product sum in the cart
 def calc_sum():
     sum = 0
-    for item in cart:
+    for item in data.cart:
         sum += item["price"]
     return sum
 
@@ -95,8 +92,7 @@ def calc_sum():
 def buy_products():
     if int(calc_sum()) != 0:
         messagebox.showinfo("Receipt", f"Total: {cart_sum_label._text}\n\n- I hate tkinter based UI")
-    global cart
-    cart = []
+    data.cart = []
     update_products_in_cart()
     # destroys all the widgets
     for widget in cart_frame.winfo_children():
