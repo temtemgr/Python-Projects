@@ -1,2 +1,2 @@
-from .gui import *
-from .data import *
+from cashregister.gui import *
+from cashregister.data import *
