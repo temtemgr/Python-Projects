@@ -4,18 +4,11 @@ import json
 from customtkinter import *
 from tkinter import messagebox
 
-import cashregister.CashRegisterGUI as gui
-import cashregister.CashRegisterLogic as core
+import cashregister.gui as gui
+import cashregister.data as data
 
 screen_width = 910
 screen_height = 550
-
-# load data
-products_JSON = open("CashRegisterGUI\cashregister\data\Products.json")
-products = json.load(products_JSON)
-
-# products in cart
-cart = []
 
 # create root window
 app = CTk()
@@ -52,14 +45,27 @@ add_product_btn.configure(command = lambda: add_product(product_id_entry.get()))
 # cart buy btn eventlistener
 cart_buy_btn.configure(command = lambda: buy_products())
 
+# displays all products
+def display_products(tab: CTkFrame):
+    display_header(tab)
+
+    for i, product in enumerate(data.products):
+        for j, value in enumerate(product.values()):
+            gui.configure_table_row(tab, value, j, i + 1)
+
+# displays header
+def display_header(tab: CTkFrame):
+    for i, h in enumerate(data.header):
+        gui.configure_table_row(tab, h, i, 0)
+
 # displays all the products
-core.display_products(all_tabs["all_products"])
+display_products(all_tabs["all_products"])
 
 # adds product to cart table
 def add_product(product_name: str):
     global cart
     global product_id_entry
-    for product in products:
+    for product in data.products:
         if product["id"] == int(product_name):
             cart.append({
                 "name": product["name"],
