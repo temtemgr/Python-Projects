@@ -17,7 +17,7 @@ app.title("Cash Register")
 gui.set_window(app, screen_width, screen_height, app._get_window_scaling())
 
 # configure FRAMES -> returns dict with frames (table, cart, product_id)
-frames: dict = gui.configure_frames(app)
+frames: dict = gui.configure_frames(app, screen_height)
 
 # FRAME product_id - widgets
 product_id_label: CTkLabel = gui.configure_product_id_label(frames["product_id"])
@@ -25,16 +25,16 @@ product_id_entry: CTkEntry = gui.configure_product_id_entry(frames["product_id"]
 add_product_btn: CTkButton = gui.configure_add_product_button(frames["product_id"])
 
 # FRAME table - widgets
-tab_view: CTkTabview = gui.configure_tab_view(frames["table"])
+tab_view: CTkTabview = gui.configure_tab_view(app)
 # configures TABS -> returns dict with tabs (all_products, fruits, vegetables, bakery, other)
 all_tabs: dict = gui.configure_tabs(tab_view)
 
 # FRAME cart - widgets
-cart_label: CTkLabel = gui.configure_cart_label(frames["cart"])
-cart_frame: CTkFrame = gui.configure_cart_frame(frames["cart"])
-cart_total_label: CTkLabel = gui.configure_cart_total_label(frames["cart"])
-cart_sum_label: CTkLabel = gui.configure_cart_sum_label(frames["cart"])
-cart_buy_btn: CTkButton = gui.configure_buy_button(frames["cart"])
+cart_label: CTkLabel = gui.configure_cart_label(app)
+cart_frame: CTkFrame = gui.configure_cart_frame(app)
+cart_total_label: CTkLabel = gui.configure_cart_total_label(app)
+cart_sum_label: CTkLabel = gui.configure_cart_sum_label(app)
+cart_buy_btn: CTkButton = gui.configure_buy_button(app)
 
 # add product btn eventlistener
 # lambda wraps code in a separate function
