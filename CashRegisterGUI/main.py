@@ -5,9 +5,12 @@ from tkinter import messagebox
 
 from cashregister import gui as gui
 from cashregister import data as data
+from cashregister import logic as core
 
 screen_width = 910
 screen_height = 550
+
+# Initialize UI
 
 # create root window
 app = CTk()
@@ -35,6 +38,8 @@ cart_frame: CTkFrame = gui.configure_cart_frame(app)
 cart_total_label: CTkLabel = gui.configure_cart_total_label(app)
 cart_sum_label: CTkLabel = gui.configure_cart_sum_label(app)
 cart_buy_btn: CTkButton = gui.configure_buy_button(app)
+
+# Handle logic
 
 # add product btn eventlistener
 # lambda wraps code in a separate function
@@ -78,19 +83,12 @@ def update_products_in_cart():
     for i, item in enumerate(data.cart):
         for j, value in enumerate(item.values()):
             gui.configure_table_row(cart_frame, value, j, i + 1)
-    sum = calc_sum()
+    sum = core.calc_sum(data.cart)
     cart_sum_label.configure(text = f"{sum} CHF")
-
-# claculates product sum in the cart
-def calc_sum():
-    sum = 0
-    for item in data.cart:
-        sum += item["price"]
-    return sum
 
 # buys products
 def buy_products():
-    if int(calc_sum()) != 0:
+    if int(core.calc_sum(data.cart)) != 0:
         messagebox.showinfo("Receipt", f"Total: {cart_sum_label._text}\n\n- I hate tkinter based UI")
     data.cart = []
     update_products_in_cart()
