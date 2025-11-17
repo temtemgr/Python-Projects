@@ -1,4 +1,10 @@
-# A simple cash register with GUI
+## A simple cash register with GUI
 
-#### Need to install following:
+### Mockup:
+
+<img src="./cashregister/media/mockup.png" width="450">
+
+-> created with figma
+
+## Requires following packages:
 pip install customtkinter
